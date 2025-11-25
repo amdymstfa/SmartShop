@@ -41,7 +41,8 @@ public abstract class User {
     private String phone;
 
     @Column(nullable = false)
-    private boolean status;
+    @Builder.Default
+    private boolean status = true;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
