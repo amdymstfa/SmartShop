@@ -1,4 +1,4 @@
-package com.microtech.smartshop.entity ;
+package com.microtech.smartshop.entity;
 
 import com.microtech.smartshop.enums.UserRole;
 import jakarta.persistence.*;
@@ -9,22 +9,21 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "users")
+@MappedSuperclass
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public abstract class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
-    private Long id ;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
-    private String name ;
+    private String name;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -33,26 +32,26 @@ public class User {
     private String userName;
 
     @Column(nullable = false)
-    private String password ;
+    private String password;
 
     @Column(nullable = false)
-    private String address ;
+    private String address;
 
     @Column(nullable = false)
-    private int phone ;
+    private String phone;
 
     @Column(nullable = false)
-    private boolean status ;
+    private boolean status;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserRole role ;
+    private UserRole role;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createAt ;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(nullable = false)
-    private LocalDateTime updateAt ;
+    private LocalDateTime updatedAt;
 }
