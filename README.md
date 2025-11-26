@@ -1,4 +1,9 @@
-# 🛒 SmartShop - Système de Gestion Commerciale B2B
+Parfait ! Je vais mettre à jour ton README en anglais et y intégrer le diagramme de classes complet avec `Customer` à la place de `Client`. Voici la version révisée :
+
+---
+
+```markdown
+# 🛒 SmartShop - B2B Commercial Management System
 
 ![Java](https://img.shields.io/badge/Java-8%2B-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.18-brightgreen)
@@ -8,176 +13,190 @@
 
 ## 📋 Description
 
-SmartShop est une application web de gestion commerciale destinée à **MicroTech Maroc**, distributeur B2B de matériel informatique basé à Casablanca. 
+SmartShop is a web-based commercial management application for **MicroTech Morocco**, a B2B distributor of IT equipment based in Casablanca.
 
-L'application permet de gérer :
-- ✅ 650 clients actifs
-- ✅ Système de fidélité à remises progressives
-- ✅ Paiements fractionnés multi-moyens par facture
-- ✅ Traçabilité complète des événements financiers
-- ✅ Gestion optimisée de la trésorerie
+The application manages:
+- ✅ 650 active customers
+- ✅ Loyalty system with progressive discounts
+- ✅ Multi-method split payments per invoice
+- ✅ Full traceability of financial events
+- ✅ Optimized cash flow management
 
 ## 🏗️ Architecture
 
 ### **Backend REST API**
-- API REST uniquement (pas de frontend)
-- Tests via Postman / Swagger
-- Authentification HTTP Session (pas de JWT)
-- Architecture en couches (Controller → Service → Repository)
+- REST API only (no frontend)
+- Testing via Postman / Swagger
+- HTTP Session Authentication (no JWT)
+- Layered architecture (Controller → Service → Repository)
 
-### **Stack Technique**
-- **Framework** : Spring Boot 2.7.18
-- **Langage** : Java 8+
-- **Base de données** : PostgreSQL / MySQL
-- **Migrations** : Liquibase
-- **ORM** : Spring Data JPA / Hibernate
-- **Mapping** : MapStruct
-- **Validation** : Bean Validation
-- **Documentation** : SpringDoc OpenAPI (Swagger)
-- **Tests** : JUnit 5, Mockito
+### **Technical Stack**
+- **Framework**: Spring Boot 2.7.18
+- **Language**: Java 8+
+- **Database**: PostgreSQL / MySQL
+- **Migrations**: Liquibase
+- **ORM**: Spring Data JPA / Hibernate
+- **Mapping**: MapStruct
+- **Validation**: Bean Validation
+- **Documentation**: SpringDoc OpenAPI (Swagger)
+- **Testing**: JUnit 5, Mockito
 
-## 📂 Structure du Projet
+## 📂 Project Structure
 
 ```
+
 smartshop/
 ├── src/main/java/com/microtech/smartshop/
 │   ├── config/          # Configurations
-│   ├── entity/          # Entités JPA
+│   ├── entity/          # JPA Entities
 │   ├── enums/           # Enumerations
-│   ├── repository/      # Repositories Spring Data
-│   ├── service/         # Services métier
+│   ├── repository/      # Spring Data Repositories
+│   ├── service/         # Business Services
 │   ├── dto/             # Data Transfer Objects
-│   ├── mapper/          # Mappers MapStruct
-│   ├── controller/      # Controllers REST
-│   ├── util/            # Utilitaires
-│   ├── exception/       # Gestion des erreurs
-│   └── interceptor/     # Interceptors HTTP
+│   ├── mapper/          # MapStruct Mappers
+│   ├── controller/      # REST Controllers
+│   ├── util/            # Utilities
+│   ├── exception/       # Error Handling
+│   └── interceptor/     # HTTP Interceptors
 │
 ├── src/main/resources/
-│   ├── application.yml              # Configuration principale
-│   ├── application-dev.yml          # Profil développement
-│   ├── application-prod.yml         # Profil production
-│   └── db/changelog/                # Migrations Liquibase
+│   ├── application.yml              # Main config
+│   ├── application-dev.yml          # Dev profile
+│   ├── application-prod.yml         # Prod profile
+│   └── db/changelog/                # Liquibase migrations
 │       ├── db.changelog-master.yaml
 │       └── changes/
 │
-└── src/test/                        # Tests unitaires et intégration
-```
+└── src/test/                        # Unit & integration tests
+
+````
 
 ## 🚀 Installation
 
-### **Prérequis**
+### **Prerequisites**
 - Java 8+ (JDK)
 - Maven 3.8+
-- PostgreSQL 15+ ou MySQL 8+
+- PostgreSQL 15+ or MySQL 8+
 - Git
 
-### **Cloner le projet**
+### **Clone the project**
 ```bash
 git clone https://github.com/microtech/smartshop.git
 cd smartshop
-```
+````
 
-### **Configurer la base de données**
+### **Database setup**
+
 ```bash
 # PostgreSQL
 createdb smartshop_db
 
-# Modifier application-dev.yml avec vos identifiants
+# Edit application-dev.yml with your credentials
 ```
 
-### **Lancer l'application**
+### **Run the application**
+
 ```bash
-# Mode développement
+# Development mode
 mvn spring-boot:run -Dspring-boot.run.profiles=dev
 
-# Ou compiler puis exécuter
+# Or build and run
 mvn clean install
 java -jar target/smartshop-1.0.0.jar --spring.profiles.active=dev
 ```
 
-### **Accéder à Swagger**
+### **Access Swagger**
+
 ```
 http://localhost:8080/swagger-ui.html
 ```
 
-## 📊 Fonctionnalités Principales
+## 📊 Main Features
 
-### **1. Gestion des Clients**
-- CRUD complet des clients
-- Suivi automatique des statistiques (commandes, montant cumulé)
-- Historique des commandes par client
+### **1. Customer Management**
 
-### **2. Système de Fidélité Automatique**
-- **BASIC** : Client par défaut
-- **SILVER** : 3 commandes OU 1,000 DH cumulés
-- **GOLD** : 10 commandes OU 5,000 DH cumulés
-- **PLATINUM** : 20 commandes OU 15,000 DH cumulés
+* Full CRUD for customers
+* Automatic statistics tracking (orders, total spent)
+* Customer order history
 
-Remises automatiques selon niveau :
-- SILVER : 5% (si commande ≥ 500 DH)
-- GOLD : 10% (si commande ≥ 800 DH)
-- PLATINUM : 15% (si commande ≥ 1,200 DH)
+### **2. Automatic Loyalty System**
 
-### **3. Gestion des Produits**
-- CRUD avec soft delete
-- Gestion du stock en temps réel
-- Filtrage et pagination
+* **BASIC**: Default tier
+* **SILVER**: 3 orders OR 1,000 DH total
+* **GOLD**: 10 orders OR 5,000 DH total
+* **PLATINUM**: 20 orders OR 15,000 DH total
 
-### **4. Gestion des Commandes**
-- Commandes multi-produits
-- Calcul automatique : sous-total HT, remises, TVA 20%, total TTC
-- Statuts : PENDING, CONFIRMED, CANCELED, REJECTED
-- Application codes promo (format PROMO-XXXX)
+Automatic discounts by tier:
 
-### **5. Paiements Multi-Moyens**
-- Types : ESPÈCES, CHÈQUE, VIREMENT
-- Limite légale espèces : 20,000 DH
-- Paiements fractionnés par commande
-- Traçabilité complète (dates, références, statuts)
+* SILVER: 5% (for orders ≥ 500 DH)
+* GOLD: 10% (for orders ≥ 800 DH)
+* PLATINUM: 15% (for orders ≥ 1,200 DH)
 
-### **6. Règles Métier**
-- Validation du stock avant commande
-- Commande confirmable uniquement si totalement payée
-- Mise à jour automatique niveau fidélité après confirmation
-- Gestion centralisée des exceptions
+### **3. Product Management**
 
-## 🧪 Tests
+* CRUD with soft delete
+* Real-time stock management
+* Filtering and pagination
+
+### **4. Order Management**
+
+* Multi-product orders
+* Automatic calculation: subtotal, discount, 20% VAT, total
+* Status: PENDING, CONFIRMED, CANCELED, REJECTED
+* Promo code support (format: PROMO-XXXX)
+
+### **5. Multi-Method Payments**
+
+* Types: CASH, CHECK, TRANSFER
+* Legal cash limit: 20,000 DH
+* Split payments per order
+* Full traceability (dates, references, statuses)
+
+### **6. Business Rules**
+
+* Stock validation before order
+* Order can only be confirmed if fully paid
+* Automatic loyalty tier update after confirmation
+* Centralized exception handling
+
+## 🧪 Testing
 
 ```bash
-# Tests unitaires
+# Unit tests
 mvn test
 
-# Tests avec couverture
+# Test coverage report
 mvn test jacoco:report
 
-# Tests d'intégration
+# Integration tests
 mvn verify
 ```
 
 ## 📦 Build
 
 ```bash
-# Build sans tests
+# Build without tests
 mvn clean package -DskipTests
 
-# Build complet
+# Full build
 mvn clean install
 ```
 
 ## 🔧 Configuration
 
-### **Profils disponibles**
-- `dev` : Développement local
-- `prod` : Production
-- `test` : Tests automatisés
+### **Profiles**
 
-### **Variables d'environnement**
+* `dev` : Local development
+* `prod` : Production
+* `test` : Automated tests
+
+### **Environment Variables**
+
 ```yaml
-# Taux TVA (configurable)
+# VAT rate (configurable)
 app.tax.vat-rate: 0.20
 
-# Limite paiement espèces
+# Cash payment limit
 app.payment.cash-limit: 20000.00
 
 # Pagination
@@ -185,85 +204,193 @@ app.pagination.default-page-size: 10
 app.pagination.max-page-size: 100
 ```
 
-## 🗃️ Base de Données
+## 🗃️ Database
 
-### **Migrations Liquibase**
-Les migrations sont automatiques au démarrage :
+### **Liquibase Migrations**
+
 ```bash
-# Voir le statut
+# Check status
 mvn liquibase:status
 
 # Rollback
 mvn liquibase:rollback -Dliquibase.rollbackCount=1
 ```
 
-### **Tables principales**
-- `users` : Utilisateurs (ADMIN/CLIENT)
-- `clients` : Clients B2B
-- `products` : Produits
-- `orders` : Commandes
-- `order_items` : Lignes de commande
-- `payments` : Paiements
-- `promo_codes` : Codes promotionnels
-- `tier_history` : Historique niveaux fidélité
+### **Main Tables**
 
-## 👥 Rôles & Permissions
+* `users` : Users (ADMIN/CLIENT)
+* `customers` : B2B customers
+* `products` : Products
+* `orders` : Orders
+* `order_items` : Order line items
+* `payments` : Payments
+* `promo_codes` : Promo codes
+* `tier_history` : Loyalty tier history
 
-### **ADMIN** (Employé MicroTech)
-- Gestion complète (CRUD) : clients, produits, commandes
-- Enregistrement des paiements
-- Validation/annulation des commandes
-- Consultation de toutes les données
+---
 
-### **CLIENT** (Entreprise cliente)
-- Consultation de son profil et statistiques
-- Historique de ses propres commandes
-- Consultation du catalogue produits (lecture seule)
+## 📝 UML Class Diagram
 
-## 📖 Documentation API
+```text
+# Entities
+
+Customer
+- id: Long
+- name: String
+- email: String
+- tier: CustomerTier
+- totalOrders: Integer
+- totalSpent: BigDecimal
+- firstOrderDate: LocalDateTime
+- lastOrderDate: LocalDateTime
+- isDeleted: Boolean
+- createdAt: LocalDateTime
+- updatedAt: LocalDateTime
+
+User
+- id: Long
+- username: String
+- password: String
+- role: UserRole
+- createdAt: LocalDateTime
+- updatedAt: LocalDateTime
+
+Product
+- id: Long
+- name: String
+- description: String
+- unitPrice: BigDecimal
+- stock: Integer
+- isDeleted: Boolean
+- createdAt: LocalDateTime
+- updatedAt: LocalDateTime
+
+Order
+- id: Long
+- customer: Customer
+- createdAt: LocalDateTime
+- subtotalExcludingTax: BigDecimal
+- discountAmount: BigDecimal
+- amountAfterDiscountExclTax: BigDecimal
+- taxAmount: BigDecimal
+- totalIncludingTax: BigDecimal
+- promoCode: String
+- status: OrderStatus
+- amountRemaining: BigDecimal
+- items: List<OrderItem>
+- payments: List<Payment>
+
+OrderItem
+- id: Long
+- order: Order
+- product: Product
+- quantity: Integer
+- unitPrice: BigDecimal
+- subTotal: BigDecimal
+
+Payment
+- id: Long
+- order: Order
+- paymentNumber: Integer
+- amount: BigDecimal
+- paymentType: PaymentType
+- paymentDate: LocalDateTime
+- clearanceDate: LocalDateTime
+- reference: String
+- bank: String
+- dueDate: LocalDate
+- status: PaymentStatus
+
+PromoCode
+- id: Long
+- code: String
+- discountPercentage: BigDecimal
+- expirationDate: LocalDate
+- used: Boolean
+- createdAt: LocalDateTime
+
+TierHistory
+- id: Long
+- customer: Customer
+- oldTier: CustomerTier
+- newTier: CustomerTier
+- changeDate: LocalDateTime
+- reason: String
+```
+
+---
+
+## 👥 Roles & Permissions
+
+### **ADMIN** (MicroTech employee)
+
+* Full CRUD: customers, products, orders
+* Payment registration
+* Order confirmation/cancellation
+* View all data
+
+### **CLIENT** (Customer company)
+
+* View own profile and stats
+* View own orders
+* Browse product catalog (read-only)
+
+---
+
+## 📖 API Documentation
 
 ### **Swagger UI**
+
 ```
 http://localhost:8080/swagger-ui.html
 ```
 
 ### **OpenAPI JSON**
+
 ```
 http://localhost:8080/api-docs
 ```
 
 ### **Postman Collection**
-Disponible dans `/docs/postman/SmartShop.postman_collection.json`
 
-## 🐛 Gestion des Erreurs
+Available at `/docs/postman/SmartShop.postman_collection.json`
 
-Tous les endpoints retournent des erreurs JSON structurées :
+---
+
+## 🐛 Error Handling
+
+All endpoints return structured JSON errors:
+
 ```json
 {
   "timestamp": "2025-11-25T10:30:00",
   "status": 404,
   "error": "Not Found",
-  "message": "Client avec l'ID 999 n'existe pas",
-  "path": "/api/clients/999"
+  "message": "Customer with ID 999 does not exist",
+  "path": "/api/customers/999"
 }
 ```
 
-### **Codes HTTP**
-- `200` : Succès
-- `201` : Créé
-- `400` : Erreur de validation
-- `401` : Non authentifié
-- `403` : Accès refusé
-- `404` : Ressource inexistante
-- `422` : Règle métier violée
-- `500` : Erreur serveur
+### **HTTP Codes**
+
+* `200` : Success
+* `201` : Created
+* `400` : Validation error
+* `401` : Unauthorized
+* `403` : Forbidden
+* `404` : Not found
+* `422` : Business rule violation
+* `500` : Server error
+
+---
 
 ## 🤝 Contribution
 
-### **Convention de commit**
+### **Commit Convention**
+
 ```
-feat: Nouvelle fonctionnalité
-fix: Correction de bug
+feat: New feature
+fix: Bug fix
 docs: Documentation
 refactor: Refactoring
 test: Tests
@@ -271,27 +398,32 @@ chore: Maintenance
 ```
 
 ### **Branches**
-- `main` : Production
-- `develop` : Développement
-- `feature/xxx` : Nouvelles fonctionnalités
-- `hotfix/xxx` : Corrections urgentes
 
-## 📜 Licence
-
-Propriété de **MicroTech Maroc** - Tous droits réservés
-
-## 👨‍💻 Auteurs
-
-- **Équipe MicroTech** - Développement initial
-
-## 📞 Contact
-
-- **Email** : contact@microtech.ma
-- **Site web** : https://www.microtech.ma
-- **Support** : support@microtech.ma
+* `main` : Production
+* `develop` : Development
+* `feature/xxx` : New feature
+* `hotfix/xxx` : Urgent fix
 
 ---
 
-**Version** : 1.0.0  
-**Dernière mise à jour** : 25 Novembre 2025  
-**Statut** : 🚧 En développement actif
+## 📜 License
+
+Property of **MicroTech Morocco** - All rights reserved
+
+## 👨‍💻 Authors
+
+* **MicroTech Team** - Initial development
+
+## 📞 Contact
+
+* **Email**: [contact@microtech.ma](mailto:contact@microtech.ma)
+* **Website**: [https://www.microtech.ma](https://www.microtech.ma)
+* **Support**: [support@microtech.ma](mailto:support@microtech.ma)
+
+---
+
+**Version**: 1.0.0
+**Last update**: November 25, 2025
+**Status**: 🚧 Active development
+
+****
