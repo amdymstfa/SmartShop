@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @EntityListeners(AuditingEntityListener.class)
 public abstract class User {
 
@@ -22,37 +21,21 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
-
     @Column(nullable = false, unique = true)
-    private String email;
-
-    @Column(nullable = false, unique = true)
-    private String userName;
+    private String username;
 
     @Column(nullable = false)
     private String password;
-
-    @Column(nullable = false)
-    private String address;
-
-    @Column(nullable = false)
-    private String phone;
-
-    @Column(nullable = false)
-    @Builder.Default
-    private boolean status = true;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 }
