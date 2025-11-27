@@ -3,19 +3,24 @@ package com.microtech.smartshop.entity;
 import com.microtech.smartshop.enums.CustomerTier;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "customers")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+@Builder
 public class Customer extends User {
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false, unique = true)
+    private String email;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -24,7 +29,7 @@ public class Customer extends User {
 
     @Column(name = "total_orders", nullable = false)
     @Builder.Default
-    private Integer totalsOrders = 0;
+    private Integer totalOrders = 0;
 
     @Column(name = "total_spent", precision = 12, scale = 2, nullable = false)
     @Builder.Default
@@ -36,54 +41,28 @@ public class Customer extends User {
     @Column(name = "last_order_date")
     private LocalDateTime lastOrderDate;
 
-    @Column(nullable = false)
+    @Column(name = "is_deleted", nullable = false)
     @Builder.Default
-    private Boolean deleted = false;
-
+    private Boolean isDeleted = false;
 
     /**
-     * Update statics after an order
-     * @param orderAmount order
+     * Update statics
+     * @param orderAmount
      */
-    public void updateStatics(BigDecimal orderAmount){
-        this.totalsOrders++;
+    public void updateStatistics(BigDecimal orderAmount) {
+        this.totalOrders++;
         this.totalSpent = this.totalSpent.add(orderAmount);
         this.lastOrderDate = LocalDateTime.now();
-
-        if (this.firstOrderDate == null){
+        if (this.firstOrderDate == null) {
             this.firstOrderDate = LocalDateTime.now();
         }
     }
 
-    /**
-     * Reset statics fot test
-     */
-    public void resetStatics(){
-        this.totalsOrders = 0 ;
-        this.totalSpent = BigDecimal.ZERO ;
-        this.firstOrderDate = null ;
-        this.lastOrderDate = null ;
-        this.tier = CustomerTier.BASIC ;
+    public void softDelete() {
+        this.isDeleted = true;
     }
 
-    /**
-     * Mark client as deleted
-     */
-    public boolean softDelete(){
-        return this.deleted = true ;
-    }
-
-    /**
-     * Restore a deleted customer
-     */
-    public boolean restore(){
-        return this.deleted = false ;
-    }
-
-    /**
-     * Check customer status
-     */
-    public boolean isActive() {
-        return !this.deleted && this.isStatus();
+    public void restore() {
+        this.isDeleted = false;
     }
 }
