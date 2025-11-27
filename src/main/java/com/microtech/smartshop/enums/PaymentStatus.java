@@ -1,7 +1,7 @@
 package com.microtech.smartshop.enums;
 
 public enum PaymentStatus {
-    PENDING ,CASHED ,REJECTED;
+    PENDING ,CASHED ,REJECTED, CLEARED;
 
     public boolean isPending(){
         return this == PENDING ;
@@ -13,5 +13,9 @@ public enum PaymentStatus {
 
     public boolean isRejected(){
         return this == REJECTED ;
+    }
+
+    public boolean isCleared(){
+        return this == CLEARED ;
     }
 }
