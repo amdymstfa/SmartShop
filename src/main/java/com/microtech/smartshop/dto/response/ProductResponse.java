@@ -1,25 +1,20 @@
 package com.microtech.smartshop.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class ProductResponse {
-
     private Long id;
-    private String nom;
+    private String name;
     private String description;
-    private BigDecimal priceOfProduct;
+    private BigDecimal unitPrice;
     private Integer stock;
-    private Boolean available; 
+    private Boolean available;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

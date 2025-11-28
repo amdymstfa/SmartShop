@@ -1,11 +1,7 @@
 package com.microtech.smartshop.dto.response;
 
 import com.microtech.smartshop.enums.CustomerTier;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -13,8 +9,8 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CustomerResponse {
-
     private Long id;
     private String name;
     private String email;
@@ -23,5 +19,5 @@ public class CustomerResponse {
     private BigDecimal totalSpent;
     private LocalDateTime firstOrderDate;
     private LocalDateTime lastOrderDate;
-
+    private LocalDateTime createdAt;
 }
