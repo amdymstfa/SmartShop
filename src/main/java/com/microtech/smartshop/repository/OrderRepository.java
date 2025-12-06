@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface OrderRepository extends JpaRepository<String, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
 
     /**
      * Find id with item
@@ -41,7 +41,7 @@ public interface OrderRepository extends JpaRepository<String, Long> {
      * @param pageable   page of customer id
      * @return Page
      */
-    Page<Order> findByCustomerId(Long customerId, Pageable pageable);
+    Optional<Order> findByCustomerId(Long customerId, Pageable pageable);
 
     /**
      * Find status of order
@@ -50,7 +50,7 @@ public interface OrderRepository extends JpaRepository<String, Long> {
      * @param pageable page of status
      * @return Page
      */
-    Page<Order> findByStatus(OrderStatus status, Pageable pageable);
+    Optional<Order> findByStatus(OrderStatus status, Pageable pageable);
 
     /**
      * Find an order in a specific period
@@ -61,7 +61,7 @@ public interface OrderRepository extends JpaRepository<String, Long> {
      * @return Page
      */
     @Query("SELECT o FROM Order o WHERE o.createdAt BETWEEN :startDate AND :endDate ORDER BY o.createdAt DESC")
-    Page<Order> findCreateAtBetween(
+    List<Order> findCreateAtBetween(
             @Param("startDate") LocalDateTime startDate,
             @Param("enDate") LocalDateTime endDate,
             Pageable pageable
@@ -85,7 +85,7 @@ public interface OrderRepository extends JpaRepository<String, Long> {
      * @param pageable
      * @return
      */
-    Page<Order> findByPromoCode(String promoCode, Pageable pageable);
+    Optional<Order> findByPromoCode(String promoCode, Pageable pageable);
 
     @Query("SELECT o FROM Order o WHERE o.status = 'PENDING' AND o.amountRemaining = 0")
     List<Order> findPendingFullyPaidOrders();
