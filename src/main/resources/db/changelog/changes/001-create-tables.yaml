@@ -51,14 +51,14 @@ databaseChangeLog:
             tableName: users
 
   # ===================================
-  # TABLE: clients
+  # TABLE: customers
   # ===================================
   - changeSet:
-      id: 001-create-table-clients
+      id: 002-create-table-customers
       author: microtech
       changes:
         - createTable:
-            tableName: clients
+            tableName: customers
             columns:
               - column:
                   name: id
@@ -66,7 +66,7 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    primaryKeyName: pk_clients
+                    primaryKeyName: pk_customers
               - column:
                   name: nom
                   type: VARCHAR(100)
@@ -78,7 +78,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     unique: true
-                    uniqueConstraintName: uk_clients_email
+                    uniqueConstraintName: uk_customers_email
               - column:
                   name: level
                   type: VARCHAR(20)
@@ -123,13 +123,13 @@ databaseChangeLog:
                     nullable: false
       rollback:
         - dropTable:
-            tableName: clients
+            tableName: customers
 
   # ===================================
   # TABLE: products
   # ===================================
   - changeSet:
-      id: 001-create-table-products
+      id: 003-create-table-products
       author: microtech
       changes:
         - createTable:
@@ -187,7 +187,7 @@ databaseChangeLog:
   # TABLE: promo_codes
   # ===================================
   - changeSet:
-      id: 001-create-table-promo-codes
+      id: 004-create-table-promo-codes
       author: microtech
       changes:
         - createTable:
@@ -208,14 +208,14 @@ databaseChangeLog:
                     unique: true
                     uniqueConstraintName: uk_promo_codes_code
               - column:
-                  name: pourcentage_remise
+                  name: discount_percentage
                   type: DECIMAL(5,2)
                   defaultValue: 5.00
                   constraints:
                     nullable: false
               - column:
-                  name: date_expiration
-                  type: DATE
+                  name: expiration_date
+                  type: TIMESTAMP
               - column:
                   name: used
                   type: BOOLEAN
@@ -231,230 +231,3 @@ databaseChangeLog:
       rollback:
         - dropTable:
             tableName: promo_codes
-
-  # ===================================
-  # TABLE: orders
-  # ===================================
-  - changeSet:
-      id: 001-create-table-orders
-      author: microtech
-      changes:
-        - createTable:
-            tableName: orders
-            columns:
-              - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    primaryKeyName: pk_orders
-              - column:
-                  name: client_id
-                  type: BIGINT
-                  constraints:
-                    nullable: false
-              - column:
-                  name: date_creation
-                  type: TIMESTAMP
-                  defaultValueComputed: CURRENT_TIMESTAMP
-                  constraints:
-                    nullable: false
-              - column:
-                  name: sous_total_ht
-                  type: DECIMAL(12,2)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: montant_remise
-                  type: DECIMAL(12,2)
-                  defaultValue: 0.00
-                  constraints:
-                    nullable: false
-              - column:
-                  name: montant_ht_apres_remise
-                  type: DECIMAL(12,2)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: montant_tva
-                  type: DECIMAL(12,2)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: total_ttc
-                  type: DECIMAL(12,2)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: code_promo
-                  type: VARCHAR(20)
-              - column:
-                  name: statut
-                  type: VARCHAR(20)
-                  defaultValue: 'PENDING'
-                  constraints:
-                    nullable: false
-              - column:
-                  name: montant_restant
-                  type: DECIMAL(12,2)
-                  constraints:
-                    nullable: false
-      rollback:
-        - dropTable:
-            tableName: orders
-
-  # ===================================
-  # TABLE: order_items
-  # ===================================
-  - changeSet:
-      id: 001-create-table-order-items
-      author: microtech
-      changes:
-        - createTable:
-            tableName: order_items
-            columns:
-              - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    primaryKeyName: pk_order_items
-              - column:
-                  name: order_id
-                  type: BIGINT
-                  constraints:
-                    nullable: false
-              - column:
-                  name: product_id
-                  type: BIGINT
-                  constraints:
-                    nullable: false
-              - column:
-                  name: quantite
-                  type: INT
-                  constraints:
-                    nullable: false
-              - column:
-                  name: prix_unitaire
-                  type: DECIMAL(12,2)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: sous_total
-                  type: DECIMAL(12,2)
-                  constraints:
-                    nullable: false
-      rollback:
-        - dropTable:
-            tableName: order_items
-
-  # ===================================
-  # TABLE: payments
-  # ===================================
-  - changeSet:
-      id: 001-create-table-payments
-      author: microtech
-      changes:
-        - createTable:
-            tableName: payments
-            columns:
-              - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    primaryKeyName: pk_payments
-              - column:
-                  name: order_id
-                  type: BIGINT
-                  constraints:
-                    nullable: false
-              - column:
-                  name: numero_paiement
-                  type: INT
-                  constraints:
-                    nullable: false
-              - column:
-                  name: montant
-                  type: DECIMAL(12,2)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: type_paiement
-                  type: VARCHAR(20)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: date_paiement
-                  type: TIMESTAMP
-                  defaultValueComputed: CURRENT_TIMESTAMP
-                  constraints:
-                    nullable: false
-              - column:
-                  name: date_encaissement
-                  type: TIMESTAMP
-              - column:
-                  name: reference
-                  type: VARCHAR(100)
-              - column:
-                  name: banque
-                  type: VARCHAR(100)
-              - column:
-                  name: echeance
-                  type: DATE
-              - column:
-                  name: statut
-                  type: VARCHAR(20)
-                  constraints:
-                    nullable: false
-      rollback:
-        - dropTable:
-            tableName: payments
-
-  # ===================================
-  # TABLE: tier_history
-  # ===================================
-  - changeSet:
-      id: 001-create-table-tier-history
-      author: microtech
-      changes:
-        - createTable:
-            tableName: tier_history
-            columns:
-              - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    primaryKeyName: pk_tier_history
-              - column:
-                  name: client_id
-                  type: BIGINT
-                  constraints:
-                    nullable: false
-              - column:
-                  name: ancien_niveau
-                  type: VARCHAR(20)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: nouveau_niveau
-                  type: VARCHAR(20)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: date_changement
-                  type: TIMESTAMP
-                  defaultValueComputed: CURRENT_TIMESTAMP
-                  constraints:
-                    nullable: false
-              - column:
-                  name: raison
-                  type: VARCHAR(255)
-      rollback:
-        - dropTable:
-            tableName: tier_history

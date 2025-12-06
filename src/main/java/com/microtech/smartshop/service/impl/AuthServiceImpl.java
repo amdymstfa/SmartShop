@@ -27,7 +27,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public User login(String username, String password) {
         // find user with username
-        User user = userRepository.findByUserName(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(
                         ()-> new UnauthorizedException("Invalid credentials")
                 );

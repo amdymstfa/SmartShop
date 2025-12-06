@@ -51,14 +51,14 @@ spring:
   # ===================================
   # JACKSON
   # ===================================
-  jackson:
-    serialization:
-      write-dates-as-timestamps: false
-      indent-output: true
-    deserialization:
-      fail-on-unknown-properties: false
-    default-property-inclusion: non_null
-    time-zone: Africa/Casablanca
+jackson:
+  serialization:
+    WRITE_DATES_AS_TIMESTAMPS: false
+    INDENT_OUTPUT: true
+  deserialization:
+    FAIL_ON_UNKNOWN_PROPERTIES: false
+  default-property-inclusion: non_null
+  time-zone: Africa/Casablanca
 
   # ===================================
   # MESSAGES VALIDATION

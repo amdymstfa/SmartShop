@@ -4,9 +4,9 @@ spring:
   # DATABASE - POSTGRESQL (DEV)
   # ===================================
   datasource:
-    url: jdbc:postgresql://localhost:5432/smartshop_dev
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://localhost:5432/smartshop_db
+    username: amdy
+    password: qwerty
     driver-class-name: org.postgresql.Driver
     hikari:
       connection-timeout: 20000
@@ -24,7 +24,8 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-
+    hibernate:
+      ddl-auto: update
   # ===================================
   # LIQUIBASE
   # ===================================
