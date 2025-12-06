@@ -1,0 +1,78 @@
+spring:
+  # ===================================
+  # DATABASE - H2 IN MEMORY
+  # ===================================
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  # ===================================
+  # H2 CONSOLE
+  # ===================================
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  # ===================================
+  # JPA / HIBERNATE
+  # ===================================
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+
+  # ===================================
+  # LIQUIBASE
+  # ===================================
+  liquibase:
+    enabled: true
+    drop-first: true
+    contexts: test
+
+  # ===================================
+  # JACKSON
+  # ===================================
+  jackson:
+    serialization:
+      indent-output: true
+
+# ===================================
+# SERVER
+# ===================================
+server:
+  port: 0
+
+# ===================================
+# LOGGING
+# ===================================
+logging:
+  level:
+    root: INFO
+    com.microtech.smartshop: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    liquibase: INFO
+    org.springframework.test: INFO
+
+# ===================================
+# JOB CONFIGURATION
+# ===================================
+app:
+  environment: test
+  debug: true
+
+  # Test values
+  tax:
+    vat-rate: 0.20
+  payment:
+    cash-limit: 20000.00
+  pagination:
+    default-page-size: 5
+    max-page-size: 50
