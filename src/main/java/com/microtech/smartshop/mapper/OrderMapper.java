@@ -1,43 +1,43 @@
 package com.microtech.smartshop.mapper;
 
-import com.microtech.smartshop.dto.response.OrderDetailResponse;
 import com.microtech.smartshop.dto.response.OrderResponse;
+import com.microtech.smartshop.dto.response.OrderDetailResponse;
 import com.microtech.smartshop.dto.response.OrderSummaryResponse;
 import com.microtech.smartshop.entity.Order;
 import org.mapstruct.*;
 
-import java.util.List;
-
-@Mapper(
-        componentModel = "spring",
-        unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        uses = {OrderItemMapper.class, PaymentMapper.class}
-)
+@Mapper(componentModel = "spring", uses = {OrderItemMapper.class, PaymentMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface OrderMapper {
 
+    @Mapping(source = "customer.id", target = "customerId")
+    @Mapping(source = "customer.name", target = "customerName")
+    @Mapping(target = "fullyPaid", expression = "java(order.getAmountRemaining().compareTo(java.math.BigDecimal.ZERO) == 0)")
+    @Mapping(target = "itemsCount", expression = "java(order.getItems() != null ? order.getItems().size() : 0)")
+    OrderResponse toOrderResponse(Order order);
 
     @Mapping(source = "customer.id", target = "customerId")
-    @Mapping(source = "customer.nom", target = "customerName")
-    @Mapping(target = "fullyPaid", expression = "java(order.isFullyPaid())")
-    @Mapping(target = "itemsCount", expression = "java(order.getItems().size())")
-    OrderResponse toResponse(Order order);
-
-
-    @Mapping(source = "customer.id", target = "customerId")
-    @Mapping(source = "customer.nom", target = "customerName")
+    @Mapping(source = "customer.name", target = "customerName")
     @Mapping(source = "customer.email", target = "customerEmail")
-    @Mapping(target = "fullyPaid", expression = "java(order.isFullyPaid())")
-    @Mapping(target = "canBeConfirmed", expression = "java(order.canBeConfirmed())")
-    @Mapping(target = "canBeCanceled", expression = "java(order.canBeCanceled())")
     @Mapping(source = "items", target = "items")
     @Mapping(source = "payments", target = "payments")
-    OrderDetailResponse toDetailResponse(Order order);
+    @Mapping(target = "fullyPaid", expression = "java(order.getAmountRemaining().compareTo(java.math.BigDecimal.ZERO) == 0)")
+    @Mapping(target = "canBeConfirmed", expression = "java(order.getStatus() == com.microtech.smartshop.enums.OrderStatus.PENDING && order.getAmountRemaining().compareTo(java.math.BigDecimal.ZERO) == 0)")
+    @Mapping(target = "canBeCanceled", expression = "java(order.getStatus() == com.microtech.smartshop.enums.OrderStatus.PENDING || order.getStatus() == com.microtech.smartshop.enums.OrderStatus.CONFIRMED)")
+    OrderDetailResponse toOrderDetailResponse(Order order);
 
+    @Mapping(source = "customer.name", target = "customerName")
+    @Mapping(target = "itemsCount", expression = "java(order.getItems() != null ? order.getItems().size() : 0)")
+    OrderSummaryResponse toOrderSummaryResponse(Order order);
 
-    @Mapping(source = "customer.nom", target = "customerName")
-    @Mapping(target = "itemsCount", expression = "java(order.getItems().size())")
-    OrderSummaryResponse toSummaryResponse(Order order);
+    default OrderResponse toResponse(Order order) {
+        return toOrderResponse(order);
+    }
 
+    default OrderDetailResponse toDetailResponse(Order order) {
+        return toOrderDetailResponse(order);
+    }
 
-    List<OrderSummaryResponse> toSummaryResponseList(List<Order> orders);
+    default OrderSummaryResponse toSummaryResponse(Order order) {
+        return toOrderSummaryResponse(order);
+    }
 }
