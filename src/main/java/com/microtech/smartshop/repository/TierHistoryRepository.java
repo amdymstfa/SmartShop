@@ -10,13 +10,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TierHistoryRepository extends JpaRepository<TierHistory, Long> {
 
     List<TierHistory> findByCustomerIdOrderByChangeDateDesc(Long customerId);
 
-    Page<TierHistory> findByCustomerId(Long customerId, Pageable pageable);
+    Optional<TierHistory> findByCustomerId(Long customerId, Pageable pageable);
 
     @Query("SELECT th FROM TierHistory th WHERE th.changeDate BETWEEN :startDate AND :endDate ORDER BY th.changeDate DESC")
     List<TierHistory> findByChangeDateBetween(
