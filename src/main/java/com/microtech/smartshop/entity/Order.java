@@ -74,18 +74,20 @@ public class Order {
 
     /**
      * Add item in order
+     *
      * @param item, item to add
      */
-    public void addItem(OrderItem item){
-        this.items.add(item) ;
+    public void addItem(OrderItem item) {
+        this.items.add(item);
         item.setOrder(this);
     }
 
     /**
      * Calculate totals
+     *
      * @param vatRate, value to apply on an order
      */
-    public void calculateTotals(BigDecimal vatRate){
+    public void calculateTotals(BigDecimal vatRate) {
 
         // Sum of item before vat and reduction
         this.subtotalExcludingTax = items.stream()
@@ -98,21 +100,22 @@ public class Order {
         // apply vat
         this.taxAmount = this.amountAfterDiscountExclTax
                 .multiply(vatRate)
-                .setScale(2,RoundingMode.HALF_UP);
+                .setScale(2, RoundingMode.HALF_UP);
 
         // add vat
         this.totalIncludingTax = this.amountAfterDiscountExclTax.add(this.taxAmount);
 
-        if (this.amountRemaining == null){
-            this.amountRemaining = this.totalIncludingTax ;
+        if (this.amountRemaining == null) {
+            this.amountRemaining = this.totalIncludingTax;
         }
     }
 
     /**
      * Add payment
+     *
      * @param payment of order
      */
-    public void addPayment(Payment payment){
+    public void addPayment(Payment payment) {
         this.payments.add(payment);
         payment.setOrder(this);
         this.amountRemaining = this.amountRemaining.subtract(payment.getAmount());
@@ -121,41 +124,63 @@ public class Order {
     /**
      * Check payment state, fully paid or not
      */
-    public boolean fullyPaid(){
-        return this.amountRemaining.compareTo(BigDecimal.ZERO) == 0 ;
+    public boolean fullyPaid() {
+        return this.amountRemaining.compareTo(BigDecimal.ZERO) == 0;
     }
 
     /**
      * Confirm payment
      */
-    public boolean canBeConfirm(){
-        return this.status == OrderStatus.PENDING && fullyPaid() ;
+    public boolean canBeConfirm() {
+        return this.status == OrderStatus.PENDING && fullyPaid();
     }
 
     /**
      * Confirm payment
      */
-    public void confirmPayment(){
-        if (!canBeConfirm()){
+    public void confirmPayment() {
+        if (!canBeConfirm()) {
             throw new IllegalMonitorStateException("Payment cannot be confirmed");
         }
-        this.status = OrderStatus.CONFIRMED ;
+        this.status = OrderStatus.CONFIRMED;
     }
 
     /**
      * Cancel payment
      */
-    public void cancel(){
-        if (this.status != OrderStatus.PENDING){
+    public void cancel() {
+        if (this.status != OrderStatus.PENDING) {
             throw new IllegalStateException("Only pending status can be canceled");
         }
-        this.status = OrderStatus.CANCELED ;
+        this.status = OrderStatus.CANCELED;
     }
 
     /**
      * Reject payment
      */
-    public void reject(){
-        this.status = OrderStatus.REJECTED ;
+    public void reject() {
+        this.status = OrderStatus.REJECTED;
+    }
+
+    public boolean isFullyPaid() {
+        return fullyPaid();
+    }
+
+    public boolean canBeConfirmed() {
+        return canBeConfirm();
+    }
+
+    public void confirm() {
+        confirmPayment();
+    }
+
+    public boolean isFinalStatus() {
+        return this.status == OrderStatus.CONFIRMED ||
+                this.status == OrderStatus.CANCELED ||
+                this.status == OrderStatus.REJECTED;
+    }
+
+    public void restoreAmountRemaining(BigDecimal amount) {
+        this.amountRemaining = this.amountRemaining.add(amount);
     }
 }
