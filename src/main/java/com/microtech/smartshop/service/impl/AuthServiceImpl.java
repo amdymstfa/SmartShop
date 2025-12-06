@@ -3,6 +3,7 @@ package com.microtech.smartshop.service.impl ;
 
 import com.microtech.smartshop.entity.User;
 import com.microtech.smartshop.enums.UserRole;
+import com.microtech.smartshop.exception.UnauthorizedException;
 import com.microtech.smartshop.repository.UserRepository;
 import com.microtech.smartshop.service.AuthService;
 import jakarta.servlet.http.HttpSession;
@@ -25,7 +26,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public User login(String username, String password) {
-        // find user with user name
+        // find user with username
         User user = userRepository.findByUserName(username)
                 .orElseThrow(
                         ()-> new UnauthorizedException("Invalid credentials")
