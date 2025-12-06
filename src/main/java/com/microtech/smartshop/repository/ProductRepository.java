@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -18,14 +19,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
      * @param pageable
      * @return Page of product
      */
-    Page<Product> findByDeletedFalse(Pageable pageable);
+    Optional<Product> findByDeletedFalse(Pageable pageable);
 
     /**
      * Find id of existing product
      * @param id
      * @return Optional
      */
-    Page<Product> findByIdAndIsDeletedFalse(Long id);
+    Optional<Product> findByIdAndIsDeletedFalse(Long id);
 
     /**
      * Search product by name
@@ -34,7 +35,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
      * @Return Page of product
      */
     @Query("SELECT p FROM Product p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%')) AND p.isDeleted = false")
-    Page<Product> findByName(@Param("name") String name, Pageable pageable);
+    Optional<Product> findByName(@Param("name") String name, Pageable pageable);
 
 
     /**
@@ -45,7 +46,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
      * @return
      */
     @Query("SELECT p FROM Product p WHERE p.unitPrice BETWEEN :minPrice AND :maxPrice AND p.isDeleted = false")
-    Page<Product> findUnitProductBetween(@Param("minPrice") BigDecimal minPrice,
+    Optional<Product> findUnitProductBetween(@Param("minPrice") BigDecimal minPrice,
                                          @Param("maxPrice") BigDecimal maxPrice,
                                          Pageable pageable);
 
@@ -56,7 +57,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
      * @param pageable page of product
      * @return Page
      */
-    Page<Product> findByStockGreaterThanAndIsDeletedFalse(Integer stock, Pageable pageable);
+    Optional<Product> findByStockGreaterThanAndIsDeletedFalse(Integer stock, Pageable pageable);
 
     /**
      *
@@ -65,7 +66,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
      */
     boolean existsByIdAndIsDeletedFalse(Long id);
 
-    Page<Product> findByIsDeletedFalse(Pageable pageable);
+    Optional<Product> findByIsDeletedFalse(Pageable pageable);
 
-    Page<Product> searchByName(String name, Pageable pageable);
+    Optional<Product> searchByName(String name, Pageable pageable);
 }
