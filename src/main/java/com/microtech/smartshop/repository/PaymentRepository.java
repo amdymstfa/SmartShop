@@ -9,9 +9,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
@@ -23,9 +23,9 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     @Query("SELECT COALESCE(MAX(p.paymentNumber), 0) FROM Payment p WHERE p.order.id = :orderId")
     Integer findMaxPaymentNumberByOrderId(@Param("orderId") Long orderId);
 
-    Optional<Payment> findByStatus(PaymentStatus status, Pageable pageable);
+    Page<Payment> findByStatus(PaymentStatus status, Pageable pageable);
 
-    Optional<Payment> findByPaymentType(PaymentType paymentType, Pageable pageable);
+    Page<Payment> findByPaymentType(PaymentType paymentType, Pageable pageable);
 
     @Query("SELECT COALESCE(SUM(p.amount), 0) FROM Payment p WHERE p.order.id = :orderId AND p.status = 'CLEARED'")
     BigDecimal sumClearedPaymentsByOrderId(@Param("orderId") Long orderId);
