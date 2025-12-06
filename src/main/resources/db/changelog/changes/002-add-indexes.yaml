@@ -1,0 +1,294 @@
+databaseChangeLog:
+
+  # ===================================
+  # INDEX: clients
+  # ===================================
+  - changeSet:
+      id: 002-create-index-clients-email
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_clients_email
+            tableName: clients
+            columns:
+              - column:
+                  name: email
+      rollback:
+        - dropIndex:
+            indexName: idx_clients_email
+            tableName: clients
+
+  - changeSet:
+      id: 002-create-index-clients-level
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_clients_level
+            tableName: clients
+            columns:
+              - column:
+                  name: level
+      rollback:
+        - dropIndex:
+            indexName: idx_clients_level
+            tableName: clients
+
+  - changeSet:
+      id: 002-create-index-clients-deleted
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_clients_deleted
+            tableName: clients
+            columns:
+              - column:
+                  name: deleted
+      rollback:
+        - dropIndex:
+            indexName: idx_clients_deleted
+            tableName: clients
+
+  # ===================================
+  # INDEX: products
+  # ===================================
+  - changeSet:
+      id: 002-create-index-products-deleted
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_products_deleted
+            tableName: products
+            columns:
+              - column:
+                  name: deleted
+      rollback:
+        - dropIndex:
+            indexName: idx_products_deleted
+            tableName: products
+
+  - changeSet:
+      id: 002-create-index-products-nom
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_products_nom
+            tableName: products
+            columns:
+              - column:
+                  name: nom
+      rollback:
+        - dropIndex:
+            indexName: idx_products_nom
+            tableName: products
+
+  # ===================================
+  # INDEX: promo_codes
+  # ===================================
+  - changeSet:
+      id: 002-create-index-promo-codes-code
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_promo_codes_code
+            tableName: promo_codes
+            columns:
+              - column:
+                  name: code
+      rollback:
+        - dropIndex:
+            indexName: idx_promo_codes_code
+            tableName: promo_codes
+
+  - changeSet:
+      id: 002-create-index-promo-codes-used
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_promo_codes_used
+            tableName: promo_codes
+            columns:
+              - column:
+                  name: used
+      rollback:
+        - dropIndex:
+            indexName: idx_promo_codes_used
+            tableName: promo_codes
+
+  # ===================================
+  # INDEX: orders
+  # ===================================
+  - changeSet:
+      id: 002-create-index-orders-client-id
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_orders_client_id
+            tableName: orders
+            columns:
+              - column:
+                  name: client_id
+      rollback:
+        - dropIndex:
+            indexName: idx_orders_client_id
+            tableName: orders
+
+  - changeSet:
+      id: 002-create-index-orders-statut
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_orders_statut
+            tableName: orders
+            columns:
+              - column:
+                  name: statut
+      rollback:
+        - dropIndex:
+            indexName: idx_orders_statut
+            tableName: orders
+
+  - changeSet:
+      id: 002-create-index-orders-date-creation
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_orders_date_creation
+            tableName: orders
+            columns:
+              - column:
+                  name: date_creation
+                  descending: true
+      rollback:
+        - dropIndex:
+            indexName: idx_orders_date_creation
+            tableName: orders
+
+  - changeSet:
+      id: 002-create-index-orders-code-promo
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_orders_code_promo
+            tableName: orders
+            columns:
+              - column:
+                  name: code_promo
+      rollback:
+        - dropIndex:
+            indexName: idx_orders_code_promo
+            tableName: orders
+
+  # ===================================
+  # INDEX: order_items
+  # ===================================
+  - changeSet:
+      id: 002-create-index-order-items-order-id
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_order_items_order_id
+            tableName: order_items
+            columns:
+              - column:
+                  name: order_id
+      rollback:
+        - dropIndex:
+            indexName: idx_order_items_order_id
+            tableName: order_items
+
+  - changeSet:
+      id: 002-create-index-order-items-product-id
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_order_items_product_id
+            tableName: order_items
+            columns:
+              - column:
+                  name: product_id
+      rollback:
+        - dropIndex:
+            indexName: idx_order_items_product_id
+            tableName: order_items
+
+  # ===================================
+  # INDEX: payments
+  # ===================================
+  - changeSet:
+      id: 002-create-index-payments-order-id
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_payments_order_id
+            tableName: payments
+            columns:
+              - column:
+                  name: order_id
+      rollback:
+        - dropIndex:
+            indexName: idx_payments_order_id
+            tableName: payments
+
+  - changeSet:
+      id: 002-create-index-payments-statut
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_payments_statut
+            tableName: payments
+            columns:
+              - column:
+                  name: statut
+      rollback:
+        - dropIndex:
+            indexName: idx_payments_statut
+            tableName: payments
+
+  - changeSet:
+      id: 002-create-index-payments-type
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_payments_type_paiement
+            tableName: payments
+            columns:
+              - column:
+                  name: type_paiement
+      rollback:
+        - dropIndex:
+            indexName: idx_payments_type_paiement
+            tableName: payments
+
+  # ===================================
+  # INDEX: tier_history
+  # ===================================
+  - changeSet:
+      id: 002-create-index-tier-history-client-id
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_tier_history_client_id
+            tableName: tier_history
+            columns:
+              - column:
+                  name: client_id
+      rollback:
+        - dropIndex:
+            indexName: idx_tier_history_client_id
+            tableName: tier_history
+
+  - changeSet:
+      id: 002-create-index-tier-history-date
+      author: microtech
+      changes:
+        - createIndex:
+            indexName: idx_tier_history_date_changement
+            tableName: tier_history
+            columns:
+              - column:
+                  name: date_changement
+                  descending: true
+      rollback:
+        - dropIndex:
+            indexName: idx_tier_history_date_changement
+            tableName: tier_history
