@@ -1,15 +1,5 @@
-Parfait ! Je vais mettre à jour ton README en anglais et y intégrer le diagramme de classes complet avec `Customer` à la place de `Client`. Voici la version révisée :
-
----
-
 ```markdown
 # 🛒 SmartShop - B2B Commercial Management System
-
-![Java](https://img.shields.io/badge/Java-8%2B-orange)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.18-brightgreen)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue)
-![Liquibase](https://img.shields.io/badge/Liquibase-4.20-red)
-![Maven](https://img.shields.io/badge/Maven-3.8%2B-purple)
 
 ## 📋 Description
 
