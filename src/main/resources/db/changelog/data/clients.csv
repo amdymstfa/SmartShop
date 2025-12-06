@@ -1,0 +1,11 @@
+id;nom;email;level;total_orders;total_spent;deleted
+1;"SARL TechnoMaroc";"contact@technomaroc.ma";"BASIC";0;0.00;false
+2;"Entreprise InfoSys";"info@infosys.ma";"SILVER";5;2500.00;false
+3;"Société DataCorp";"contact@datacorp.ma";"GOLD";12;7800.00;false
+4;"SARL WebMasters";"hello@webmasters.ma";"PLATINUM";25;18500.00;false
+5;"Société CloudTech";"contact@cloudtech.ma";"BASIC";0;0.00;false
+6;"Entreprise DevPro";"info@devpro.ma";"SILVER";4;1800.00;false
+7;"SARL NetSolutions";"contact@netsolutions.ma";"GOLD";11;6200.00;false
+8;"Société AppBuilders";"hello@appbuilders.ma";"BASIC";1;450.00;false
+9;"Entreprise CodeLab";"contact@codelab.ma";"SILVER";6;3200.00;false
+10;"SARL DigitalWave";"info@digitalwave.ma";"GOLD";15;9500.00;false
