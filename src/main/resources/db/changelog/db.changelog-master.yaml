@@ -1,0 +1,26 @@
+databaseChangeLog:
+
+  # =====================================
+  # CHANGESET 001: Creation of Tables
+  # =====================================
+  - include:
+      file: db/changelog/changes/001-create-tables.yaml
+
+  # =====================================
+  # CHANGESET 002: Addition of Indexes
+  # =====================================
+  - include:
+      file: db/changelog/changes/002-add-indexes.yaml
+
+  # ====================================
+  # CHANGESET 003: Addition of Constraints
+  # =====================================
+  - include:
+      file: db/changelog/changes/003-add-constraints.yaml
+
+  # =====================================
+  # CHANGESET 004: Seed Data Initial
+  # =====================================
+  - include:
+      file: db/changelog/changes/004-seed-data.yaml
+      context: dev,test
