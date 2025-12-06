@@ -1,8 +1,9 @@
-package com.microtech.smartshop.service.impl ;
+package com.microtech.smartshop.service.impl;
 
 import com.microtech.smartshop.dto.response.CustomerStatistics;
 import com.microtech.smartshop.entity.Customer;
 import com.microtech.smartshop.entity.Order;
+import com.microtech.smartshop.exception.ResourceNotFoundException;
 import com.microtech.smartshop.repository.CustomerRepository;
 import com.microtech.smartshop.repository.OrderRepository;
 import com.microtech.smartshop.service.CustomerService;
@@ -11,7 +12,6 @@ import com.microtech.smartshop.util.CustomerTierCalculator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.microtech.smartshop.exception.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -22,8 +22,8 @@ public class CustomerServiceImpl
         extends GenericServiceImpl<Customer, Long, CustomerRepository>
         implements CustomerService {
 
-    private final OrderRepository orderRepository ;
-    private final CustomerTierCalculator tierCalculator ;
+    private final OrderRepository orderRepository;
+    private final CustomerTierCalculator tierCalculator;
 
     public CustomerServiceImpl(
             CustomerRepository repository,
@@ -36,9 +36,7 @@ public class CustomerServiceImpl
 
     @Override
     public CustomerStatistics getCustomerStatistics(Long id) {
-
         Customer customer = findByIdOrThrow(id);
-
         return CustomerStatistics.builder()
                 .totalOrders(customer.getTotalOrders())
                 .totalSpent(customer.getTotalSpent())
@@ -59,17 +57,15 @@ public class CustomerServiceImpl
 
     @Override
     public void updateTierLevel(Long id) {
-        Customer customer = findByIdOrThrow(id) ;
+        Customer customer = findByIdOrThrow(id);
 
         var newTier = tierCalculator.calculateTier(
                 customer.getTotalOrders(),
                 customer.getTotalSpent()
         );
 
-        if (!newTier.equals(customer.getTier())){
-            log.info(
-                    "Updating customer {} tier : {} -> {}", id , customer.getTier(), newTier
-            );
+        if (!newTier.equals(customer.getTier())) {
+            log.info("Updating customer {} tier : {} -> {}", id, customer.getTier(), newTier);
             customer.setTier(newTier);
             repository.save(customer);
         }
@@ -78,10 +74,8 @@ public class CustomerServiceImpl
     @Override
     @Transactional(readOnly = true)
     public Customer findByEmail(String email) {
-        return repository.findByEmail(email)
-                .orElseThrow(
-                        () -> new ResourceNotFoundException("Customer with email " + email + " not found")
-                );
+        return repository.findByEmail(email).stream().findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Customer with email " + email + " not found"));
     }
 
     @Override
