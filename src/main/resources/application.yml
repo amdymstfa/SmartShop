@@ -1,0 +1,170 @@
+spring:
+  application:
+    name: SmartShop
+
+  # ===================================
+  # ACTIVE PROFILE
+  # ===================================
+  profiles:
+    active: dev
+
+  # ===================================
+  # JPA / HIBERNATE
+  # ===================================
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+    show-sql: false
+
+  # ===================================
+  # LIQUIBASE
+  # ===================================
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    drop-first: false
+
+  # ===================================
+  # SESSION HTTP
+  # ===================================
+  session:
+    store-type: none  # Session en mémoire
+    timeout: 30m
+
+  servlet:
+    session:
+      cookie:
+        name: SMARTSHOP_SESSION
+        http-only: true
+        secure: false
+        max-age: 1800
+
+  # ===================================
+  # JACKSON
+  # ===================================
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+      indent-output: true
+    deserialization:
+      fail-on-unknown-properties: false
+    default-property-inclusion: non_null
+    time-zone: Africa/Casablanca
+
+  # ===================================
+  # MESSAGES VALIDATION
+  # ===================================
+  messages:
+    basename: messages
+    encoding: UTF-8
+
+# ===================================
+# SERVER
+# ===================================
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: never
+    include-exception: false
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+
+# ===================================
+# LOGGING
+# ===================================
+logging:
+  level:
+    root: INFO
+    com.microtech.smartshop: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    liquibase: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# ===================================
+# SPRINGDOC / SWAGGER
+# ===================================
+springdoc:
+  api-docs:
+    path: /api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    operations-sorter: method
+    tags-sorter: alpha
+    display-request-duration: true
+    doc-expansion: none
+  show-actuator: false
+
+# ===================================
+# CONFIGURATION MÉTIER
+# ===================================
+app:
+  name: SmartShop
+  version: 1.0.0
+  description: Système de gestion commerciale B2B pour MicroTech Maroc
+
+  # Configuration TVA
+  tax:
+    vat-rate: 0.20  # 20%
+
+  # Payments configuration
+  payment:
+    cash-limit: 20000.00  # Legal limit on cash (DH)
+
+  # Configuration Pagination
+  pagination:
+    default-page-size: 10
+    max-page-size: 100
+
+  # Loyalty Configuration
+  loyalty:
+    tiers:
+      silver:
+        min-orders: 3
+        min-spent: 1000.00
+        discount-rate: 0.05  # 5%
+        discount-threshold: 500.00
+      gold:
+        min-orders: 10
+        min-spent: 5000.00
+        discount-rate: 0.10  # 10%
+        discount-threshold: 800.00
+      platinum:
+        min-orders: 20
+        min-spent: 15000.00
+        discount-rate: 0.15  # 15%
+        discount-threshold: 1200.00
+
+  # Promo Code Configuration
+  promo:
+    format-pattern: "PROMO-[A-Z0-9]{4}"
+    default-discount: 0.05  # 5%
+
+# ===================================
+# MANAGEMENT / ACTUATOR
+# ===================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
