@@ -1,0 +1,238 @@
+databaseChangeLog:
+
+  # ===================================
+  # FOREIGN KEYS: orders
+  # ===================================
+  - changeSet:
+      id: 003-add-fk-orders-client
+      author: microtech
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: orders
+            baseColumnNames: client_id
+            referencedTableName: clients
+            referencedColumnNames: id
+            constraintName: fk_orders_client
+            onDelete: RESTRICT
+            onUpdate: CASCADE
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: orders
+            constraintName: fk_orders_client
+
+  # ===================================
+  # FOREIGN KEYS: order_items
+  # ===================================
+  - changeSet:
+      id: 003-add-fk-order-items-order
+      author: microtech
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: order_items
+            baseColumnNames: order_id
+            referencedTableName: orders
+            referencedColumnNames: id
+            constraintName: fk_order_items_order
+            onDelete: CASCADE
+            onUpdate: CASCADE
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: order_items
+            constraintName: fk_order_items_order
+
+  - changeSet:
+      id: 003-add-fk-order-items-product
+      author: microtech
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: order_items
+            baseColumnNames: product_id
+            referencedTableName: products
+            referencedColumnNames: id
+            constraintName: fk_order_items_product
+            onDelete: RESTRICT
+            onUpdate: CASCADE
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: order_items
+            constraintName: fk_order_items_product
+
+  # ===================================
+  # FOREIGN KEYS: payments
+  # ===================================
+  - changeSet:
+      id: 003-add-fk-payments-order
+      author: microtech
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: payments
+            baseColumnNames: order_id
+            referencedTableName: orders
+            referencedColumnNames: id
+            constraintName: fk_payments_order
+            onDelete: RESTRICT
+            onUpdate: CASCADE
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: payments
+            constraintName: fk_payments_order
+
+  # ===================================
+  # FOREIGN KEYS: tier_history
+  # ===================================
+  - changeSet:
+      id: 003-add-fk-tier-history-client
+      author: microtech
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: tier_history
+            baseColumnNames: client_id
+            referencedTableName: clients
+            referencedColumnNames: id
+            constraintName: fk_tier_history_client
+            onDelete: CASCADE
+            onUpdate: CASCADE
+      rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: tier_history
+            constraintName: fk_tier_history_client
+
+  # ===================================
+  # CHECK CONSTRAINTS: products
+  # ===================================
+  - changeSet:
+      id: 003-add-check-products-prix
+      author: microtech
+      changes:
+        - sql:
+            sql: ALTER TABLE products ADD CONSTRAINT chk_products_prix CHECK (prix_unitaire > 0)
+      rollback:
+        - sql:
+            sql: ALTER TABLE products DROP CONSTRAINT chk_products_prix
+
+  - changeSet:
+      id: 003-add-check-products-stock
+      author: microtech
+      changes:
+        - sql:
+            sql: ALTER TABLE products ADD CONSTRAINT chk_products_stock CHECK (stock >= 0)
+      rollback:
+        - sql:
+            sql: ALTER TABLE products DROP CONSTRAINT chk_products_stock
+
+  # ===================================
+  # CHECK CONSTRAINTS: clients
+  # ===================================
+  - changeSet:
+      id: 003-add-check-clients-total-spent
+      author: microtech
+      changes:
+        - sql:
+            sql: ALTER TABLE clients ADD CONSTRAINT chk_clients_total_spent CHECK (total_spent >= 0)
+      rollback:
+        - sql:
+            sql: ALTER TABLE clients DROP CONSTRAINT chk_clients_total_spent
+
+  - changeSet:
+      id: 003-add-check-clients-total-orders
+      author: microtech
+      changes:
+        - sql:
+            sql: ALTER TABLE clients ADD CONSTRAINT chk_clients_total_orders CHECK (total_orders >= 0)
+      rollback:
+        - sql:
+            sql: ALTER TABLE clients DROP CONSTRAINT chk_clients_total_orders
+
+  # ===================================
+  # CHECK CONSTRAINTS: orders
+  # ===================================
+  - changeSet:
+      id: 003-add-check-orders-montants
+      author: microtech
+      changes:
+        - sql:
+            sql: |
+              ALTER TABLE orders ADD CONSTRAINT chk_orders_sous_total CHECK (sous_total_ht >= 0);
+              ALTER TABLE orders ADD CONSTRAINT chk_orders_montant_remise CHECK (montant_remise >= 0);
+              ALTER TABLE orders ADD CONSTRAINT chk_orders_montant_ht CHECK (montant_ht_apres_remise >= 0);
+              ALTER TABLE orders ADD CONSTRAINT chk_orders_montant_tva CHECK (montant_tva >= 0);
+              ALTER TABLE orders ADD CONSTRAINT chk_orders_total_ttc CHECK (total_ttc >= 0);
+              ALTER TABLE orders ADD CONSTRAINT chk_orders_montant_restant CHECK (montant_restant >= 0);
+      rollback:
+        - sql:
+            sql: |
+              ALTER TABLE orders DROP CONSTRAINT chk_orders_sous_total;
+              ALTER TABLE orders DROP CONSTRAINT chk_orders_montant_remise;
+              ALTER TABLE orders DROP CONSTRAINT chk_orders_montant_ht;
+              ALTER TABLE orders DROP CONSTRAINT chk_orders_montant_tva;
+              ALTER TABLE orders DROP CONSTRAINT chk_orders_total_ttc;
+              ALTER TABLE orders DROP CONSTRAINT chk_orders_montant_restant;
+
+  # ===================================
+  # CHECK CONSTRAINTS: order_items
+  # ===================================
+  - changeSet:
+      id: 003-add-check-order-items-quantite
+      author: microtech
+      changes:
+        - sql:
+            sql: ALTER TABLE order_items ADD CONSTRAINT chk_order_items_quantite CHECK (quantite > 0)
+      rollback:
+        - sql:
+            sql: ALTER TABLE order_items DROP CONSTRAINT chk_order_items_quantite
+
+  - changeSet:
+      id: 003-add-check-order-items-prix
+      author: microtech
+      changes:
+        - sql:
+            sql: ALTER TABLE order_items ADD CONSTRAINT chk_order_items_prix CHECK (prix_unitaire > 0)
+      rollback:
+        - sql:
+            sql: ALTER TABLE order_items DROP CONSTRAINT chk_order_items_prix
+
+  - changeSet:
+      id: 003-add-check-order-items-sous-total
+      author: microtech
+      changes:
+        - sql:
+            sql: ALTER TABLE order_items ADD CONSTRAINT chk_order_items_sous_total CHECK (sous_total >= 0)
+      rollback:
+        - sql:
+            sql: ALTER TABLE order_items DROP CONSTRAINT chk_order_items_sous_total
+
+  # ===================================
+  # CHECK CONSTRAINTS: payments
+  # ===================================
+  - changeSet:
+      id: 003-add-check-payments-montant
+      author: microtech
+      changes:
+        - sql:
+            sql: ALTER TABLE payments ADD CONSTRAINT chk_payments_montant CHECK (montant > 0)
+      rollback:
+        - sql:
+            sql: ALTER TABLE payments DROP CONSTRAINT chk_payments_montant
+
+  - changeSet:
+      id: 003-add-check-payments-numero
+      author: microtech
+      changes:
+        - sql:
+            sql: ALTER TABLE payments ADD CONSTRAINT chk_payments_numero CHECK (numero_paiement > 0)
+      rollback:
+        - sql:
+            sql: ALTER TABLE payments DROP CONSTRAINT chk_payments_numero
+
+  # ===================================
+  # CHECK CONSTRAINTS: promo_codes
+  # ===================================
+  - changeSet:
+      id: 003-add-check-promo-codes-pourcentage
+      author: microtech
+      changes:
+        - sql:
+            sql: ALTER TABLE promo_codes ADD CONSTRAINT chk_promo_codes_pourcentage CHECK (pourcentage_remise > 0 AND pourcentage_remise <= 100)
+      rollback:
+        - sql:
+            sql: ALTER TABLE promo_codes DROP CONSTRAINT chk_promo_codes_pourcentage
