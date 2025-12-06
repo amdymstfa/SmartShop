@@ -36,7 +36,6 @@ public class CustomerController {
     private final CustomerMapper customerMapper;
     private final OrderMapper orderMapper;
 
-
     @PostMapping
     @Operation(summary = "Create customer", description = "Create a new customer")
     public ResponseEntity<CustomerResponse> create(@Valid @RequestBody CreateCustomerRequest request) {
@@ -49,7 +48,6 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-
     @GetMapping("/{id}")
     @Operation(summary = "Get customer by ID", description = "Get customer details by ID")
     public ResponseEntity<CustomerResponse> getById(@PathVariable Long id) {
@@ -61,7 +59,6 @@ public class CustomerController {
         CustomerResponse response = customerMapper.toResponse(customer);
         return ResponseEntity.ok(response);
     }
-
 
     @GetMapping
     @Operation(summary = "Get all customers", description = "Get all customers with pagination")
@@ -77,7 +74,6 @@ public class CustomerController {
         return ResponseEntity.ok(responses);
     }
 
-
     @PutMapping("/{id}")
     @Operation(summary = "Update customer", description = "Update customer information")
     public ResponseEntity<CustomerResponse> update(
@@ -89,13 +85,13 @@ public class CustomerController {
         Customer customer = customerService.findById(id)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
-        customerMapper.updateEntity(request, customer);
+
+        customerMapper.updateEntityFromRequest(request, customer);
         Customer updatedCustomer = customerService.update(id, customer);
         CustomerResponse response = customerMapper.toResponse(updatedCustomer);
 
         return ResponseEntity.ok(response);
     }
-
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete customer", description = "Soft delete a customer")
@@ -106,7 +102,6 @@ public class CustomerController {
         return ResponseEntity.noContent().build();
     }
 
-
     @GetMapping("/{id}/statistics")
     @Operation(summary = "Get customer statistics", description = "Get customer order statistics")
     public ResponseEntity<CustomerStatistics> getStatistics(@PathVariable Long id) {
@@ -116,7 +111,6 @@ public class CustomerController {
         return ResponseEntity.ok(stats);
     }
 
-
     @GetMapping("/{id}/orders")
     @Operation(summary = "Get customer orders", description = "Get customer order history")
     public ResponseEntity<List<OrderSummaryResponse>> getOrder(@PathVariable Long id) {
@@ -124,12 +118,11 @@ public class CustomerController {
 
         List<OrderSummaryResponse> orders = customerService.getOrderHistory(id)
                 .stream()
-                .map(orderMapper::toSummaryResponse)
+                .map(orderMapper::toOrderSummaryResponse)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(orders);
     }
-
 
     @PostMapping("/{id}/update-tier")
     @Operation(summary = "Update customer tier", description = "Recalculate and update loyalty tier")
