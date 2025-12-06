@@ -18,10 +18,10 @@ public interface PromoCodeRepository extends JpaRepository<PromoCode, Long> {
 
     boolean existsByCode(String code);
 
-    Page<PromoCode> findByUsedFalse(Pageable pageable);
+    Optional<PromoCode> findByUsedFalse(Pageable pageable);
 
     @Query("SELECT p FROM PromoCode p WHERE p.used = false AND (p.expirationDate IS NULL OR p.expirationDate >= :currentDate)")
-    Page<PromoCode> findValidPromoCodes(@Param("currentDate") LocalDate currentDate, Pageable pageable);
+    Optional<PromoCode> findValidPromoCodes(@Param("currentDate") LocalDate currentDate, Pageable pageable);
 
     @Query("SELECT p FROM PromoCode p WHERE p.code = :code AND p.used = false AND (p.expirationDate IS NULL OR p.expirationDate >= :currentDate)")
     Optional<PromoCode> findValidPromoCodeByCode(
