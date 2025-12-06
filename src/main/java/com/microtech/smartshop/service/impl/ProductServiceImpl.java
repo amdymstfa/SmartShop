@@ -62,6 +62,7 @@ public class ProductServiceImpl
     @Override
     @Transactional(readOnly = true)
     public Page<Product> findAllAvailable(Pageable pageable) {
-        return repository.findByDeletedFalse(pageable);
+        return repository.findByIsDeletedFalse(pageable);
     }
+
 }
