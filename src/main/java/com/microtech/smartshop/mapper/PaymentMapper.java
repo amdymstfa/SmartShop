@@ -12,9 +12,8 @@ public interface PaymentMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "order", ignore = true)
     @Mapping(target = "paymentNumber", ignore = true)
-    @Mapping(target = "paymentDate", ignore = true)
-    @Mapping(target = "clearanceDate", ignore = true)
     @Mapping(target = "status", ignore = true)
+    @Mapping(target = "clearedAt", ignore = true)
     Payment toEntity(CreatePaymentRequest request);
 
     @Mapping(source = "order.id", target = "orderId")
