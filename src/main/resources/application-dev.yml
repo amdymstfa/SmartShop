@@ -1,0 +1,96 @@
+
+spring:
+  # ===================================
+  # DATABASE - POSTGRESQL (DEV)
+  # ===================================
+  datasource:
+    url: jdbc:postgresql://localhost:5432/smartshop_dev
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      max-lifetime: 1200000
+
+  # ===================================
+  # JPA / HIBERNATE
+  # ===================================
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  # ===================================
+  # LIQUIBASE
+  # ===================================
+  liquibase:
+    enabled: true
+    drop-first: false
+    contexts: dev
+
+  # ===================================
+  # SESSION
+  # ===================================
+  servlet:
+    session:
+      cookie:
+        secure: false
+
+  # ===================================
+  # DEVTOOLS
+  # ===================================
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+
+# ===================================
+# SERVER
+# ===================================
+server:
+  port: 8080
+  error:
+    include-stacktrace: on_param
+
+# ===================================
+# LOGGING
+# ===================================
+logging:
+  level:
+    root: INFO
+    com.microtech.smartshop: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    liquibase: DEBUG
+    org.springframework.jdbc.core: DEBUG
+  file:
+    name: logs/smartshop-dev.log
+
+# ===================================
+# SPRINGDOC / SWAGGER
+# ===================================
+springdoc:
+  swagger-ui:
+    enabled: true
+    try-it-out-enabled: true
+
+# ===================================
+# JOB CONFIGURATION (Override)
+# ===================================
+app:
+  # Environment
+  environment: development
+
+  # Mode debug
+  debug: true
+
+  # URLs
+  base-url: http://localhost:8080
+  frontend-url: http://localhost:3000
