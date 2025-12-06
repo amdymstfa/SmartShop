@@ -1,6 +1,5 @@
 package com.microtech.smartshop.repository;
 
-
 import com.microtech.smartshop.entity.Customer;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
