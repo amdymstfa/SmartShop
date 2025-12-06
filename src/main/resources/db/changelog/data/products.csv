@@ -1,0 +1,16 @@
+id;nom;description;prix_unitaire;stock;deleted
+1;"Dell Latitude 5420";"Ordinateur portable professionnel - Intel Core i5, 8GB RAM, 256GB SSD";5500.00;50;false
+2;"HP EliteBook 840";"PC portable entreprise - Intel Core i7, 16GB RAM, 512GB SSD";7800.00;30;false
+3;"Lenovo ThinkPad T14";"Laptop professionnel - AMD Ryzen 5, 8GB RAM, 256GB SSD";6200.00;40;false
+4;"Ecran Dell 24 pouces";"Moniteur Full HD IPS - HDMI, DisplayPort";1200.00;100;false
+5;"Clavier Logitech MX Keys";"Clavier sans fil rétroéclairé pour professionnels";850.00;80;false
+6;"Souris Logitech MX Master 3";"Souris ergonomique sans fil haute précision";650.00;120;false
+7;"Imprimante HP LaserJet Pro";"Imprimante laser monochrome A4 - Wifi";2500.00;25;false
+8;"Scanner Canon LiDE 400";"Scanner à plat haute résolution USB";950.00;45;false
+9;"Webcam Logitech C920";"Webcam Full HD 1080p avec micro intégré";550.00;60;false
+10;"Casque Jabra Evolve2 65";"Casque sans fil professionnel avec réduction bruit";1400.00;35;false
+11;"Routeur TP-Link Archer AX50";"Routeur WiFi 6 Dual Band Gigabit";1100.00;40;false
+12;"Switch Cisco SG110-16";"Switch Gigabit 16 ports non manageable";1800.00;20;false
+13;"Disque dur externe Seagate 2TB";"HDD portable USB 3.0 - 2To";580.00;90;false
+14;"SSD Samsung 1TB";"SSD interne SATA 2.5 pouces - 1To";950.00;70;false
+15;"Onduleur APC 650VA";"Onduleur Back-UPS avec protection surtension";850.00;50;false
