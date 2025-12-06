@@ -1,4 +1,4 @@
-package com.microtech.smartshop.repository ;
+package com.microtech.smartshop.repository;
 
 import com.microtech.smartshop.entity.Product;
 import org.springframework.data.domain.Page;
@@ -14,59 +14,21 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    /**
-     * Find existing product(not deleted)
-     * @param pageable
-     * @return Page of product
-     */
-    Optional<Product> findByDeletedFalse(Pageable pageable);
+    Page<Product> findByIsDeletedFalse(Pageable pageable);
 
-    /**
-     * Find id of existing product
-     * @param id
-     * @return Optional
-     */
     Optional<Product> findByIdAndIsDeletedFalse(Long id);
 
-    /**
-     * Search product by name
-     * @param name
-     * @param pageable
-     * @Return Page of product
-     */
     @Query("SELECT p FROM Product p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%')) AND p.isDeleted = false")
-    Optional<Product> findByName(@Param("name") String name, Pageable pageable);
+    Page<Product> findByName(@Param("name") String name, Pageable pageable);
 
-
-    /**
-     * Find unit price between two product
-     * @param minPrice
-     * @param maxPrice
-     * @param pageable
-     * @return
-     */
     @Query("SELECT p FROM Product p WHERE p.unitPrice BETWEEN :minPrice AND :maxPrice AND p.isDeleted = false")
-    Optional<Product> findUnitProductBetween(@Param("minPrice") BigDecimal minPrice,
+    Page<Product> findUnitProductBetween(@Param("minPrice") BigDecimal minPrice,
                                          @Param("maxPrice") BigDecimal maxPrice,
                                          Pageable pageable);
 
+    Page<Product> findByStockGreaterThanAndIsDeletedFalse(Integer stock, Pageable pageable);
 
-    /**
-     *
-     * @param stock of product
-     * @param pageable page of product
-     * @return Page
-     */
-    Optional<Product> findByStockGreaterThanAndIsDeletedFalse(Integer stock, Pageable pageable);
-
-    /**
-     *
-     * @param id
-     * @return
-     */
     boolean existsByIdAndIsDeletedFalse(Long id);
 
-    Optional<Product> findByIsDeletedFalse(Pageable pageable);
-
-    Optional<Product> searchByName(String name, Pageable pageable);
+    Page<Product> searchByName(String name, Pageable pageable);
 }
