@@ -20,10 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
-/**
- * Implementation of the Order service.
- * This is the most complex service: handles calculations, stock management, discounts, promotions, and business rules.
- */
 @Slf4j
 @Service
 @Transactional
@@ -57,15 +53,10 @@ public class OrderServiceImpl
         return "Order";
     }
 
-    // ============================================
-    // ORDER CREATION
-    // ============================================
-
     @Override
     public Order createOrder(CreateOrderRequest request) {
         log.info("Creating order for customer {}", request.getCustomerId());
 
-        // 1. Retrieve the customer
         Customer customer = customerRepository.findById(request.getCustomerId())
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Customer with ID " + request.getCustomerId() + " not found"));
@@ -74,19 +65,16 @@ public class OrderServiceImpl
             throw new BusinessRuleException("Cannot create an order for a deleted customer");
         }
 
-        // 2. Create the order
         Order order = Order.builder()
                 .customer(customer)
                 .status(OrderStatus.PENDING)
                 .build();
 
-        // 3. Add items and check stock
         for (OrderItemRequest itemReq : request.getItems()) {
             Product product = productRepository.findByIdAndIsDeletedFalse(itemReq.getProductId())
                     .orElseThrow(() -> new ResourceNotFoundException(
                             "Product with ID " + itemReq.getProductId() + " not found"));
 
-            // Check product stock
             if (!product.hasStock(itemReq.getQuantity())) {
                 order.reject();
                 repository.save(order);
@@ -95,7 +83,6 @@ public class OrderServiceImpl
                                 product.getName(), product.getStock(), itemReq.getQuantity()));
             }
 
-            // Create the order item
             OrderItem item = OrderItem.builder()
                     .product(product)
                     .quantity(itemReq.getQuantity())
@@ -104,59 +91,40 @@ public class OrderServiceImpl
             item.calculateSubTotal();
             order.addItem(item);
 
-            // Decrease product stock
             product.decrementStock(itemReq.getQuantity());
             productRepository.save(product);
         }
 
-        // 4. Calculate initial totals
         order.calculateTotals(vatRate);
 
-        // 5. Apply loyalty discount
         BigDecimal loyaltyDiscount = discountCalculator.calculateDiscount(
                 customer.getTier(),
                 order.getSubtotalExcludingTax()
         );
         if (loyaltyDiscount.compareTo(BigDecimal.ZERO) > 0) {
             order.setDiscountAmount(loyaltyDiscount);
-            log.info("Applied loyalty discount: {} (tier: {})", loyaltyDiscount, customer.getTier());
         }
 
-        // 6. Apply promo code if present
         if (request.getPromoCode() != null && !request.getPromoCode().isBlank()) {
             PromoCode promoCode = promoCodeRepository.findValidPromoCodeByCode(
-                    request.getPromoCode(),
-                    java.time.LocalDate.now()
-            ).orElseThrow(() -> new BusinessRuleException(
-                    "Invalid or expired promo code: " + request.getPromoCode()));
+                            request.getPromoCode(), java.time.LocalDate.now())
+                    .orElseThrow(() -> new BusinessRuleException(
+                            "Invalid or expired promo code: " + request.getPromoCode()));
 
             BigDecimal promoDiscount = order.getSubtotalExcludingTax()
-                    .multiply(promoCode.getDiscountPercentage())
-                    .divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP);
+                    .multiply(promoCode.getDiscountPercentage()).divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP);
 
             order.setDiscountAmount(order.getDiscountAmount().add(promoDiscount));
             order.setPromoCode(promoCode.getCode());
 
-            // Mark promo code as used
-            promoCode.markAsUsed();
+            promoCode.setUsed(true);
             promoCodeRepository.save(promoCode);
-
-            log.info("Applied promo code {} discount: {}", promoCode.getCode(), promoDiscount);
         }
 
-        // 7. Recalculate totals after discounts
         order.calculateTotals(vatRate);
 
-        // 8. Save order
-        Order savedOrder = repository.save(order);
-        log.info("Order {} created successfully. Total: {}", savedOrder.getId(), savedOrder.getTotalIncludingTax());
-
-        return savedOrder;
+        return repository.save(order);
     }
-
-    // ============================================
-    // ORDER STATUS MANAGEMENT
-    // ============================================
 
     @Override
     public Order confirmOrder(Long id) {
@@ -170,14 +138,11 @@ public class OrderServiceImpl
 
         order.confirm();
 
-        // Update customer statistics
         Customer customer = order.getCustomer();
         customer.updateStatistics(order.getTotalIncludingTax());
         customerRepository.save(customer);
 
         repository.save(order);
-        log.info("Order {} confirmed. Customer {} statistics updated", id, customer.getId());
-
         return order;
     }
 
@@ -189,14 +154,12 @@ public class OrderServiceImpl
             throw new BusinessRuleException("Only PENDING orders can be canceled");
         }
 
-        // Restore stock
         for (OrderItem item : order.getItems()) {
             Product product = item.getProduct();
             product.incrementStock(item.getQuantity());
             productRepository.save(product);
         }
 
-        // Release promo code if used
         if (order.getPromoCode() != null) {
             promoCodeRepository.findByCode(order.getPromoCode())
                     .ifPresent(promo -> {
@@ -207,8 +170,6 @@ public class OrderServiceImpl
 
         order.cancel();
         repository.save(order);
-        log.info("Order {} canceled. Stock restored", id);
-
         return order;
     }
 
@@ -217,13 +178,8 @@ public class OrderServiceImpl
         Order order = findByIdOrThrow(id);
         order.reject();
         repository.save(order);
-        log.info("Order {} rejected", id);
         return order;
     }
-
-    // ============================================
-    // QUERY METHODS
-    // ============================================
 
     @Override
     @Transactional(readOnly = true)
@@ -240,7 +196,7 @@ public class OrderServiceImpl
     @Override
     @Transactional(readOnly = true)
     public Order findByIdWithDetails(Long id) {
-        return repository.findByIdWithItemsAndPayments(id)
+        return repository.findByIdWithItemsAndPayment(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Order with ID " + id + " not found"));
     }
